@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:background="#4D4D4D"
+    tools:context="org.threebeans.airquality.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/grade_layout"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#03A9F4"
+            android:gravity="center"
+            android:text="좋음"
+            android:textSize="10dp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#4CAF50"
+            android:gravity="center"
+            android:text="보통"
+            android:textSize="10dp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#FFC107"
+            android:gravity="center"
+            android:text="나쁨"
+            android:textSize="10dp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#F44336"
+            android:gravity="center"
+            android:text="아주나쁨"
+            android:textSize="10dp"
+            android:textColor="@android:color/white" />
+
+
+    </LinearLayout>
+
+    <lecho.lib.hellocharts.view.ColumnChartView
+        android:id="@+id/chart"
+        android:layout_marginStart="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/grade_layout" />
+
+</RelativeLayout>
