@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             onResume();
-            resumeHandler.postDelayed(this, 3600000);
+            resumeHandler.postDelayed(this, 1800000);
         }
     };
 
@@ -81,65 +83,70 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<AirQuality>() {
             @Override
             public void onResponse(Call<AirQuality> call, Response<AirQuality> response) {
-                List<AirQualityItem> airQualityItemList = response.body().getAirQualityItemList();
+                try{
+                    List<AirQualityItem> airQualityItemList = response.body().getAirQualityItemList();
 
-                List<Column> columns = new ArrayList<Column>();
-                List<SubcolumnValue> values;
-                List<AxisValue> axisValues = new ArrayList<AxisValue>();
+                    List<Column> columns = new ArrayList<>();
+                    List<SubcolumnValue> values = new ArrayList<>();
+                    List<AxisValue> axisValues = new ArrayList<>();
 
-                int labelIndex = 0;
-                for(int i = airQualityItemList.size()-1 ; i >= 0 ; i--){
+                    int labelIndex = 0;
+                    for(int i = airQualityItemList.size()-1 ; i >= 0 ; i--){
 
-                    AirQualityItem airQualityItem = airQualityItemList.get(i);
-                    String grade = airQualityItem.getKhaiGrade();
+                        AirQualityItem airQualityItem = airQualityItemList.get(i);
+                        String grade = airQualityItem.getKhaiGrade();
 
-                    int color = 0;
+                        int color = 0;
 
-                    switch (grade){
-                        case "1":
-                            color = Color.parseColor("#03A9F4");
-                            break;
-                        case "2":
-                            color = Color.parseColor("#4CAF50");
-                            break;
-                        case "3":
-                            color = Color.parseColor("#FFC107");
-                            break;
-                        case "4":
-                            color = Color.parseColor("#F44336");
-                            break;
+                        switch (grade){
+                            case "1":
+                                color = Color.parseColor("#03A9F4");
+                                break;
+                            case "2":
+                                color = Color.parseColor("#4CAF50");
+                                break;
+                            case "3":
+                                color = Color.parseColor("#FFC107");
+                                break;
+                            case "4":
+                                color = Color.parseColor("#F44336");
+                                break;
+                        }
+
+
+                        values.add(new SubcolumnValue(Integer.parseInt(airQualityItem.getKhaiValue()), color));
+
+                        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+                        DateTime dateTime = formatter.parseDateTime(airQualityItem.getDataTime());
+
+                        axisValues.add(new AxisValue(labelIndex).setLabel(dateTime.toString("MM-dd HH:mm")));
+
+                        Column column = new Column(values);
+
+                        column.setHasLabels(true);
+                        columns.add(column);
+                        labelIndex++;
                     }
 
-                    values = new ArrayList<SubcolumnValue>();
-                    values.add(new SubcolumnValue(Integer.parseInt(airQualityItem.getKhaiValue()), color));
+                    Axis axisX = new Axis(axisValues);
 
-                    DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
-                    DateTime dateTime = formatter.parseDateTime(airQualityItem.getDataTime());
+                    axisX.setName("날짜");
+                    axisX.setLineColor(Color.WHITE);
+                    axisX.setTextColor(Color.WHITE);
 
-                    axisValues.add(new AxisValue(labelIndex).setLabel(dateTime.toString("MM-dd HH:mm")));
+                    columnChartData = new ColumnChartData(columns);
+                    columnChartData.setAxisXBottom(axisX);
 
-                    Column column = new Column(values);
-
-                    column.setHasLabels(true);
-                    columns.add(column);
-                    labelIndex++;
+                    chart.setColumnChartData(columnChartData);
+                }catch (Exception exception){
+                    FirebaseCrash.report(exception);
                 }
 
-                Axis axisX = new Axis(axisValues);
-
-                axisX.setName("날짜");
-                axisX.setLineColor(Color.WHITE);
-                axisX.setTextColor(Color.WHITE);
-
-                columnChartData = new ColumnChartData(columns);
-                columnChartData.setAxisXBottom(axisX);
-
-                chart.setColumnChartData(columnChartData);
             }
 
             @Override
             public void onFailure(Call<AirQuality> call, Throwable t) {
-                Log.e("error", t.getMessage());
+                FirebaseCrash.report(t);
             }
         });
     }

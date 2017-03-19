@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "935717072376",
+    "firebase_url": "https://airquality-ea8b1.firebaseio.com",
+    "project_id": "airquality-ea8b1",
+    "storage_bucket": "airquality-ea8b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935717072376:android:dba5ee2b37f345ec",
+        "android_client_info": {
+          "package_name": "org.threebeans.airquality"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "935717072376-3lvb2rnoert7bka4d93vp4utuq8ofo8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBid-BAYe_cAaAX4OFs_xOADNbXKmfDLfU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
